@@ -43,17 +43,23 @@ function GetCadasralPoints(judet_id, localitate_uat, numar_cadastral) {
     let url = `https://geoportal.ancpi.ro/maps/rest/services/eterra3_publish/MapServer/1/query?f=json&where=INSPIRE_ID%20%3D%20%27RO.${judet_id}.${localitate_uat}.${numar_cadastral}%27&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=NATIONAL_CADASTRAL_REFERENCE`;
     fetch(url, options)
         .then((res) => {
-            return res.json();
+            return res.json()
+                    
         })
         .then((data) => {
             dxfButton.innerText = "Descarcă DXF";
             dxfButton.classList.remove("disabled");
             dxfButton.disabled = false;
-            if (data.features[0] == undefined) {
-                console.log("No data");
+            console.log("data:", data);
+            if(data.error){
+                dxfButton.disabled = true;
+                throw new Error(`Eroare ${data.error.code} : ${data.error.message}`);    
+            }
+            if (data.features.length < 1) {
                 dxfButton.disabled = true;
                 throw new Error("Nu s-a gasit numarul cadastral");
             } else {
+                let cadaster = new Cadaster (data.features[0].geometry.rings);
             }
         })
         .catch((err) => {
@@ -69,9 +75,7 @@ function GetCadasralPoints(judet_id, localitate_uat, numar_cadastral) {
 function ListenHiddenInputsHandleButton() {}
 
 dxfButton.addEventListener("mouseup", (e) => {
-    console.log(JUDETE_INPUT_HIDDEN.value);
-    console.log(LISTA_UAT_INPUT_HIDDEN.value);
-    console.log(NC_INPUT.value);
+
     if (
         JUDETE_INPUT_HIDDEN.value != -1 &&
         LISTA_UAT_INPUT_HIDDEN.value != -1 &&
@@ -104,7 +108,7 @@ dxfButton.addEventListener("mouseup", (e) => {
             let uatListWidget = document.querySelectorAll(
                 "[widgetid='uatList']"
             )[0];
-            let uatArrowButton = uatListWidget.firstChild.firstChild.lastChild;
+            let uatArrowButton = uatListWidget.firstChild.firstChild;
             uatListWidget.classList.add("error-border");
             uatArrowButton.addEventListener("mouseup", () => {
                 uatListWidget.classList.remove("error-border");

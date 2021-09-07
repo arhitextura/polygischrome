@@ -1,12 +1,15 @@
-$main-dark : #505c66;
-$main-dark-active : #252a2e;
-$main-color : #dde2f0;
-$secondary-color:#4c8e97;
+$main-dark : #2e2e2e;
+$main-dark-active : #1A1A1A;
+$main-color : #dfe5f7;
+$secondary-color:#FF7C00;
 $error-color:#f13232;
 
 .dxf_button {
     width: 100%;
-    height: 27px;
+    min-height: 27px;
+    max-height: 40px;
+    font-size: 14px;
+    display: block;
     color: $main-dark ;
     background-color: white;
     border: 2px solid $main-dark;
