@@ -41,10 +41,5 @@ class Cadaster{
     GetCenterToBoundingBox(){
         return 0;
     }
-    GetCenterOfMass(){
-        return 0;
-    }
-
-
 
 }
