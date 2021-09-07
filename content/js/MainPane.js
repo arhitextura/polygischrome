@@ -1,7 +1,6 @@
-chrome.runtime.sendMessage({ message: "hello" }, function (res) {
-    alert(res);
-});
-
+// chrome.runtime.sendMessage({ message: "hello" }, function (res) {
+//     alert(res);
+// });
 document.body.style.backgroundColor = "orange";
 let JUDETE_INPUT_HIDDEN = document.querySelectorAll("[name = 'judete']")[0];
 let LISTA_UAT_INPUT_HIDDEN = document.querySelectorAll("[name = 'uatList']")[0];
@@ -30,6 +29,7 @@ let dxfButton = document.createElement("button");
 dxfButton.classList.add("dxf_button");
 dxfButton.innerText = "Descarcă DXF";
 dxfButton.disabled = false;
+
 polygisPane.appendChild(dxfButton);
 
 function GetCadasralPoints(judet_id, localitate_uat, numar_cadastral) {
@@ -40,14 +40,29 @@ function GetCadasralPoints(judet_id, localitate_uat, numar_cadastral) {
             Referer: "https://geoportal.ancpi.ro/geoportal/imobile/Harta.html",
         },
     };
-    //let url = `https://geoportal.ancpi.ro/maps/rest/services/eterra3_publish/MapServer/1/query?f=json&where=INSPIRE_ID='RO.${234}.${100969}.${63435}'&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=NATIONAL_CADASTRAL_REFERENCE`;
     let url = `https://geoportal.ancpi.ro/maps/rest/services/eterra3_publish/MapServer/1/query?f=json&where=INSPIRE_ID%20%3D%20%27RO.${judet_id}.${localitate_uat}.${numar_cadastral}%27&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=NATIONAL_CADASTRAL_REFERENCE`;
     fetch(url, options)
         .then((res) => {
             return res.json();
         })
         .then((data) => {
-            console.log(data);
+            dxfButton.innerText = "Descarcă DXF";
+            dxfButton.classList.remove("disabled");
+            dxfButton.disabled = false;
+            if (data.features[0] == undefined) {
+                console.log("No data");
+                dxfButton.disabled = true;
+                throw new Error("Nu s-a gasit numarul cadastral");
+            } else {
+            }
+        })
+        .catch((err) => {
+            dxfButton.innerText = err.message;
+            AddLoaderToButton(dxfButton);
+            setTimeout(function () {
+                dxfButton.innerText = "Descarcă DXF";
+                dxfButton.disabled = false;
+            }, 3000);
         });
 }
 
@@ -57,23 +72,50 @@ dxfButton.addEventListener("mouseup", (e) => {
     console.log(JUDETE_INPUT_HIDDEN.value);
     console.log(LISTA_UAT_INPUT_HIDDEN.value);
     console.log(NC_INPUT.value);
-    console.log(
-        "Is all Undefined?",
-        JUDETE_INPUT_HIDDEN.value != -1 &&
-            LISTA_UAT_INPUT_HIDDEN.value != -1 &&
-            NC_INPUT.value != ""
-    );
     if (
         JUDETE_INPUT_HIDDEN.value != -1 &&
         LISTA_UAT_INPUT_HIDDEN.value != -1 &&
         NC_INPUT.value != ""
     ) {
+        dxfButton.innerText = "Se încarcă...";
+        dxfButton.classList.add("disabled");
+        dxfButton.disabled = true;
         GetCadasralPoints(
             JUDETE_INPUT_HIDDEN.value,
             LISTA_UAT_INPUT_HIDDEN.value,
             NC_INPUT.value
         );
     } else {
-        console.error("Big error in request");
+        if (JUDETE_INPUT_HIDDEN.value == -1) {
+            let judeteWidget = document.querySelectorAll(
+                "[widgetid='judete']"
+            )[0];
+            let judeteArrowButton = judeteWidget.firstChild;
+            judeteWidget.classList.add("error-border");
+            judeteArrowButton.addEventListener("mouseup", () => {
+                judeteWidget.classList.remove("error-border");
+            });
+        }
+        if (
+            LISTA_UAT_INPUT_HIDDEN.value == 0 ||
+            LISTA_UAT_INPUT_HIDDEN.value == "" ||
+            LISTA_UAT_INPUT_HIDDEN.value == -1
+        ) {
+            let uatListWidget = document.querySelectorAll(
+                "[widgetid='uatList']"
+            )[0];
+            let uatArrowButton = uatListWidget.firstChild.firstChild.lastChild;
+            uatListWidget.classList.add("error-border");
+            uatArrowButton.addEventListener("mouseup", () => {
+                uatListWidget.classList.remove("error-border");
+            });
+        }
+        if (NC_INPUT.value == "") {
+            NC_INPUT.classList.add("error-border");
+            console.log("ncinput widget: ", NC_INPUT);
+            NC_INPUT.addEventListener("input", () => {
+                NC_INPUT.classList.remove("error-border");
+            });
+        }
     }
 });

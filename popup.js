@@ -1,4 +1,9 @@
 // Initialize button with user's preferred color
+let xRangeInput = document.getElementById("x-range");
+let yRangeInput = document.getElementById("y-range");
+let xRangeSpan = document.querySelector(".x-range");
+let yRangeSpan = document.querySelector(".y-range");
+
 let changeColor = document.getElementById("changeColor");
 
 chrome.storage.sync.get("color", ({ color }) => {
@@ -22,3 +27,13 @@ function setPageBackgroundColor() {
         document.body.style.backgroundColor = color;
     });
 }
+
+xRangeInput.addEventListener("input", (e) => {
+    xRangeSpan.innerText = `x: ${e.target.value}`;
+    chrome.storage.sync.set({ xRange: e.target.value });
+    console.log(chrome.storage.syn);
+});
+yRangeInput.addEventListener("input", (e) => {
+    yRangeSpan.innerText = `y: ${e.target.value}`;
+    chrome.storage.sync.set({ yRange: e.target.value });
+});

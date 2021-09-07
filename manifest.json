@@ -15,8 +15,8 @@
         {
             "matches": ["https://geoportal.ancpi.ro/*"],
             "run_at": "document_end",
-            "js": ["contentscript.js"],
-            "css": ["content/contentStyleSheet.css"]
+            "js": ["content/js/functions.js", "content/js/MainPane.js"],
+            "css": ["content/css/maincontent.css"]
         }
     ],
     "host_permissions": ["https://geoportal.ancpi.ro/"],

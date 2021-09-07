@@ -9,6 +9,7 @@ chrome.action.onClicked.addListener((tab) => {
 });
 
 console.log("Background started!");
+
 chrome.runtime.onMessage.addListener(function (res, sender, sendResponse) {
     sendResponse({ response: document });
 });
