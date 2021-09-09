@@ -87,7 +87,8 @@ class Cadaster {
         };
     }
     APICall_GetDXFFile(judet_id, localitate_uat, numar_cadastral) {
-        const api_url = "https://api.polygis.xyz/dxf";
+        //const api_url = "https://api.polygis.xyz/dxf";
+        const api_url = "http://127.0.0.1:5000/dxf";
         let bodyData = {
             judet_id: judet_id,
             localitate_uat: localitate_uat,
@@ -98,19 +99,21 @@ class Cadaster {
         var options = {
             method: "POST",
             body: JSON.stringify(bodyData),
+            headers:{
+                "Content-Type":"application/json",
+            },
         };
         fetch(api_url, options)
             .then((res) => {
-                console.log(res.status);
                 return res.blob();
             })
             .then((dxfBlob) => {
+                //TODO Revoke object url after click.
                 var objectURL = URL.createObjectURL(dxfBlob);
                 const a = document.createElement("a");
                 a.href = objectURL;
                 a.download = `${numar_cadastral}.dxf`;
                 a.click();
-                console.log(a);
             });
     }
 }

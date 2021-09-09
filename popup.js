@@ -19,7 +19,7 @@ yRangeInput.addEventListener("input", (e) => {
 window.onload = function () {
     chrome.storage.sync.get(["absoluteCoordinates"], (res) => {
         if (res.absoluteCoordinates == undefined) {
-            chrome.storage.sync.set({ absoluteCoordinates: e.target.checked });
+            chrome.storage.sync.set({ absoluteCoordinates: false });
         }
         absCoordCheckBox.checked = res.absoluteCoordinates;
     });
