@@ -1,30 +1,57 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="button.css" />
+        <link rel="stylesheet" href="content/css/popup.css" />
+        <link rel="stylesheet" href="content/css/maincontent.css" />
     </head>
-    <body>
-        <button id="changeColor"></button>
-        <input
-            type="range"
-            min="100"
-            max="500"
-            value="250"
-            class="slider"
-            id="x-range"
-            step="25"
-        />
-        <span class="x-range">x:250</span>
-        <input
-            type="range"
-            min="100"
-            max="500"
-            value="250"
-            class="slider"
-            id="y-range"
-            step="25"
-        />
-        <span class="y-range">y:250</span>
+    <body class="popup-body">
+        <div class="polygis-header">
+            <img src="images/Polygis_128.png" width="54" height="54" />
+            <div class="logo-container">
+                <h1 class="logo-text">polyGIS</h1>
+                <span class="logo-text-small">extensie chrome</span>
+            </div>
+        </div>
+        <h1>Optiuni</h1>
+        <section>
+            <div class="checkbox-wrapper">
+                <input
+                    type="checkbox"
+                    name="coordonate-absolute"
+                    id="coordonate-absolute"
+                />
+                <label for="coordonate-absolute">Coordonate absolute?</label>
+            </div>
+        </section>
+        <section>
+            <p>Extensie a zonei fata de centrul cadastrului cautat:</p>
+            <input
+                type="range"
+                min="100"
+                max="500"
+                value="250"
+                class="slider"
+                id="x-range"
+                step="25"
+                disabled
+            />
+            <span class="x-range">x:250</span>
+            <input
+                type="range"
+                min="100"
+                max="500"
+                value="250"
+                class="slider"
+                id="y-range"
+                step="25"
+                disabled
+            />
+            <span class="y-range">y:250</span>
+            <p class="explanation">
+                Extragerea a unei zone va fi disponibila la urmatoarea
+                actualizare.
+            </p>
+        </section>
     </body>
     <script src="popup.js"></script>
 </html>

@@ -36,6 +36,10 @@
 
 div.polygis-main {
   min-height: 0px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -97,5 +101,45 @@ span.timed-loader {
     -webkit-transform: scaleX(0);
             transform: scaleX(0);
   }
+}
+
+.polygis-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 3px;
+  margin-bottom: 10px;
+  font-family: 'Montserrat', sans-serif, 'Bahnschrift', 'Calibri';
+  color: #2e2e2e;
+}
+
+.polygis-header div.logo-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-left: 4px;
+}
+
+.polygis-header div.logo-container h1.logo-text {
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-top: 0;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.polygis-header div.logo-container span.logo-text-small {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  margin-top: 0;
+  font-size: 12px;
 }
 /*# sourceMappingURL=maincontent.css.map */

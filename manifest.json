@@ -1,8 +1,7 @@
 {
-    "name": "Getting Started Example",
-    "options_page": "options.html",
-    "description": "Build an Extension!",
-    "version": "1.0",
+    "name": "polyGIS",
+    "description": "Extension for downloading DXF files of Romanian Cadasters",
+    "version": "0.0.1",
     "manifest_version": 3,
     "background": {
         "service_worker": "background.js"
@@ -15,11 +14,21 @@
         {
             "matches": ["https://geoportal.ancpi.ro/*"],
             "run_at": "document_end",
-            "js": ["content/js/functions.js", "content/js/MainPane.js"],
+            "js": [
+                "content/js/functions.js",
+                "content/js/MainPane.js",
+                "content/js/DesignElements.js"
+            ],
             "css": ["content/css/maincontent.css"]
         }
     ],
     "host_permissions": ["https://geoportal.ancpi.ro/"],
+    "web_accessible_resources": [
+        {
+            "resources": ["images/Polygis_128.png", "images/Polygis_64.png"],
+            "matches": ["https://geoportal.ancpi.ro/*"]
+        }
+    ],
     "action": {
         "default_popup": "popup.html",
         "default_icon": {
@@ -33,6 +42,6 @@
         "16": "/images/Polygis_16.png",
         "32": "/images/Polygis_32.png",
         "48": "/images/Polygis_48.png",
-        "128": "/images/Polygis_128.png"    
+        "128": "/images/Polygis_128.png"
     }
 }

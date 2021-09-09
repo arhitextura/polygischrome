@@ -1,32 +1,10 @@
 // Initialize button with user's preferred color
+let popupBody = document.querySelector(".popup-body");
 let xRangeInput = document.getElementById("x-range");
 let yRangeInput = document.getElementById("y-range");
 let xRangeSpan = document.querySelector(".x-range");
 let yRangeSpan = document.querySelector(".y-range");
-
-let changeColor = document.getElementById("changeColor");
-
-chrome.storage.sync.get("color", ({ color }) => {
-    changeColor.style.backgroundColor = color;
-});
-
-// When the button is clicked, inject setPageBackgroundColor into current page
-changeColor.addEventListener("click", async () => {
-    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-    chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        function: setPageBackgroundColor,
-    });
-});
-
-// The body of this function will be executed as a content script inside the
-// current page
-function setPageBackgroundColor() {
-    chrome.storage.sync.get("color", ({ color }) => {
-        document.body.style.backgroundColor = color;
-    });
-}
+let absCoordCheckBox = document.querySelector("#coordonate-absolute");
 
 xRangeInput.addEventListener("input", (e) => {
     xRangeSpan.innerText = `x: ${e.target.value}`;
@@ -36,4 +14,17 @@ xRangeInput.addEventListener("input", (e) => {
 yRangeInput.addEventListener("input", (e) => {
     yRangeSpan.innerText = `y: ${e.target.value}`;
     chrome.storage.sync.set({ yRange: e.target.value });
+});
+
+window.onload = function () {
+    chrome.storage.sync.get(["absoluteCoordinates"], (res) => {
+        if (res.absoluteCoordinates == undefined) {
+            chrome.storage.sync.set({ absoluteCoordinates: e.target.checked });
+        }
+        absCoordCheckBox.checked = res.absoluteCoordinates;
+    });
+};
+
+absCoordCheckBox.addEventListener("input", (e) => {
+    chrome.storage.sync.set({ absoluteCoordinates: e.target.checked });
 });

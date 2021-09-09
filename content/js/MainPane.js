@@ -1,7 +1,7 @@
 // chrome.runtime.sendMessage({ message: "hello" }, function (res) {
 //     alert(res);
 // });
-document.body.style.backgroundColor = "orange";
+let CADASTER;
 let JUDETE_INPUT_HIDDEN = document.querySelectorAll("[name = 'judete']")[0];
 let LISTA_UAT_INPUT_HIDDEN = document.querySelectorAll("[name = 'uatList']")[0];
 let NC_INPUT = document.querySelector("#numarCadastral");
@@ -15,6 +15,19 @@ let polygisDivPane = contentPane.insertBefore(
     contentPaneFirstSection
 );
 polygisDivPane.classList.add("polygis-main");
+
+logoURL = chrome.runtime.getURL("images/Polygis_128.png");
+//Logo Header
+polygisDivPane.innerHTML = `
+<div class = "polygis-header">
+    <img src = "${logoURL}" width = "54" height="54"/>
+    <div class="logo-container">
+        <h1 class = "logo-text">polyGIS</h1>
+        <span class = "logo-text-small">extensie chrome</span>
+    </div>
+</div>
+
+`;
 
 // When the ok button is clicked expand the widget
 let okButton = document.querySelectorAll("[widgetid = 'ok']")[0];
@@ -43,23 +56,32 @@ function GetCadasralPoints(judet_id, localitate_uat, numar_cadastral) {
     let url = `https://geoportal.ancpi.ro/maps/rest/services/eterra3_publish/MapServer/1/query?f=json&where=INSPIRE_ID%20%3D%20%27RO.${judet_id}.${localitate_uat}.${numar_cadastral}%27&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=NATIONAL_CADASTRAL_REFERENCE`;
     fetch(url, options)
         .then((res) => {
-            return res.json()
-                    
+            return res.json();
         })
         .then((data) => {
             dxfButton.innerText = "Descarcă DXF";
             dxfButton.classList.remove("disabled");
             dxfButton.disabled = false;
             console.log("data:", data);
-            if(data.error){
+            //If data is an error object send error
+            if (data.error) {
                 dxfButton.disabled = true;
-                throw new Error(`Eroare ${data.error.code} : ${data.error.message}`);    
+                throw new Error(
+                    `Eroare ${data.error.code} : ${data.error.message}`
+                );
             }
+            // If Cadaster was not found do nothing, send error
             if (data.features.length < 1) {
                 dxfButton.disabled = true;
                 throw new Error("Nu s-a gasit numarul cadastral");
             } else {
-                let cadaster = new Cadaster (data.features[0].geometry.rings);
+                // Request to the api to make it dxf
+                CADASTER = new Cadaster(data.features[0].geometry.rings[0]);
+                CADASTER.APICall_GetDXFFile(
+                    judet_id,
+                    localitate_uat,
+                    numar_cadastral
+                );
             }
         })
         .catch((err) => {
@@ -75,7 +97,6 @@ function GetCadasralPoints(judet_id, localitate_uat, numar_cadastral) {
 function ListenHiddenInputsHandleButton() {}
 
 dxfButton.addEventListener("mouseup", (e) => {
-
     if (
         JUDETE_INPUT_HIDDEN.value != -1 &&
         LISTA_UAT_INPUT_HIDDEN.value != -1 &&
