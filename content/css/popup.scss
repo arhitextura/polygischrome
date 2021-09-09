@@ -37,3 +37,33 @@ p.explanation{
     color:#636363;
     font-style: italic;
 }
+a.link-donatie, .link-email{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: $main-dark;
+    &:visited{
+        color: $secondary-color;
+    }
+    svg.donation-heart{
+        margin-right:5px ;
+        &.beating{
+            animation-name: beat;
+            animation-duration: 800ms;
+            animation-iteration-count: infinite;
+        }
+        @keyframes beat {
+            0%{
+                transform: scale(1.0);
+            }
+            30%{
+                transform: scale(1.2);
+            }
+            100%{
+                transform: scale(1.0);
+            }
+
+        }
+
+    }
+}

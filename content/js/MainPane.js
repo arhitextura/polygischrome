@@ -62,8 +62,6 @@ function GetCadasralPoints(judet_id, localitate_uat, numar_cadastral) {
             dxfButton.innerText = "Descarcă DXF";
             dxfButton.classList.remove("disabled");
             dxfButton.disabled = false;
-            console.log("data:", data);
-            //If data is an error object send error
             if (data.error) {
                 dxfButton.disabled = true;
                 throw new Error(

@@ -5,7 +5,7 @@ let yRangeInput = document.getElementById("y-range");
 let xRangeSpan = document.querySelector(".x-range");
 let yRangeSpan = document.querySelector(".y-range");
 let absCoordCheckBox = document.querySelector("#coordonate-absolute");
-
+let donationElement = document.querySelector(".link-donatie");
 xRangeInput.addEventListener("input", (e) => {
     xRangeSpan.innerText = `x: ${e.target.value}`;
     chrome.storage.sync.set({ xRange: e.target.value });
@@ -28,3 +28,10 @@ window.onload = function () {
 absCoordCheckBox.addEventListener("input", (e) => {
     chrome.storage.sync.set({ absoluteCoordinates: e.target.checked });
 });
+
+donationElement.onmouseover = () => {
+    document.querySelector(".donation-heart").classList.add("beating");
+};
+donationElement.onmouseout = () => {
+    document.querySelector(".donation-heart").classList.remove("beating");
+};

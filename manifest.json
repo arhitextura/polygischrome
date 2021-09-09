@@ -8,7 +8,7 @@
     },
     "permissions": ["storage", "activeTab", "scripting", "webRequest"],
     "content_security_policy": {
-        "extension_pages": "script-src 'self'; object-src 'self'"
+        "extension_pages": "script-src 'self'; object-src 'self';script-src-elem 'self'"
     },
     "content_scripts": [
         {
